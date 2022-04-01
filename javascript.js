@@ -67,6 +67,9 @@ function clickButton (buttonValue) {
         case '7':
         case '8':
         case '9':
+            if (lastInputType === '=') {
+                clearDisplay();
+            }
             if (firstNum === '') {
                 firstNum += buttonValue;
                 topDisplayString += buttonValue;
@@ -88,26 +91,104 @@ function clickButton (buttonValue) {
         case '*':
         case '+':
         case '-':
-            if (lastInputType === 'number') {
+            // Operators can ONLY be used if the last input was a number
+            if (lastInputType === 'number' && operator === '') {
                 operator = buttonValue;
                 topDisplayString += buttonValue;
                 displayTop.textContent = topDisplayString;
+                lastInputType = 'operator';
+            } else if (lastInputType === 'number' && operator !== '') {
+                // Here we are chaining operations. 
+                topDisplayString += buttonValue;
+                
+                // Calculate answer.
+                let answer = operate(firstNum, secondNum, operator);
+                operator = buttonValue;
+                // Update bottom display with answer.
+                bottomDisplayString = answer.toString();
+                displayTop.textContent = topDisplayString;
+                displayBottom.textContent = bottomDisplayString;
+                if (answer === 'DIV0') {
+                    displayBottom.textContent = "INFINITY";
+                    lastInputType = '=';
+                } else {
+                    firstNum = answer.toString();
+                    secondNum = '';
+                    lastInputType = 'operator';
+                }
             }
             break;
         case 'del':
+            if (lastInputType !== '=' && lastInputType !== '') {
+                // Slice the last character off the display string
+                let lastChar = topDisplayString[topDisplayString.length-1];
+                topDisplayString = topDisplayString.slice(0, (topDisplayString.length - 1));
+                // If we've deleted an operator, that means the last character in the equation is now a number
+                if (lastInputType === 'operator') {
+                    lastInputType = 'number';
+                    secondNum = '';
+                    operator = '';
+                } else if (lastInputType === 'number') {
+                    switch (topDisplayString[topDisplayString.length-1]) {
+                        case '+':
+                        case '-':
+                        case '*':
+                        case '/':
+                            lastInputType = 'operator';
+                            secondNum = '';
+                            break;
+                        case  '':
+                            lastInputType = '';
+                            firstNum = '';
+                            secondNum = '';
+                            break;
+                        default:
+                            firstNum = firstNum.slice(0, -1);
+                            lastInputType = 'number';
+                            break;
+                    }
+                }
+                displayTop.textContent = topDisplayString;
+                displayBottom.textContent = '';
+            }
             break;
         case 'AC':
-            operator = '';
-            lastInputType = '';
-            firstNum = '';
-            secondNum = '';
-            displayTop.textContent = '';
-            displayBottom.textContent = '';
-            topDisplayString = '';
-            bottomDisplayString = '';
+            clearDisplay();
             break;
         case '=':
+            callEquals();
+            break;
     }
+}
+
+function callEquals() {
+    // Equals can ONLY be used if the last input was a number
+    if (lastInputType === 'number' && operator !== '') {
+        // Calculate answer.
+        let answer = operate(firstNum, secondNum, operator);
+        
+        // Update top display with '='.
+        topDisplayString += '=';
+        // Update bottom display with answer.
+        bottomDisplayString = answer.toString();
+        displayTop.textContent = topDisplayString;
+        displayBottom.textContent = bottomDisplayString;
+        if (answer === 'DIV0') {
+            displayBottom.textContent = "INFINITY";
+        }
+        lastInputType = '=';
+    }
+}
+
+function clearDisplay () {
+    operator = '';
+    lastInputType = '';
+    firstNum = '';
+    secondNum = '';
+    displayTop.textContent = '';
+    displayBottom.textContent = '';
+    topDisplayString = '';
+    bottomDisplayString = '';
 }
 
 function add (a, b) {
@@ -119,11 +200,10 @@ function subtract (a, b) {
 }
 
 function divide (a, b) {
-    // May need to check division by zero here
-    return Number(a) / Number(b);
+    return Number((Number(a) / Number(b)).toFixed(2));
 }
 
-function subtract (a, b) {
+function multiply (a, b) {
     return Number(a) * Number(b);
 }
 
@@ -138,6 +218,9 @@ function operate (num1, num2, operator) {
         case '-':
             return subtract(num1, num2);
         case '/':
+            if (num2 === 0) {
+                return 'DIV0';
+            }
             return divide(num1, num2);
         case '*':
             return multiply(num1, num2);
