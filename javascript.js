@@ -7,6 +7,7 @@ const btnDivide = document.querySelector('.btn-divide');
 const btnMultiply = document.querySelector('.btn-multiply');
 const btnSubtract = document.querySelector('.btn-subtract');
 const btnAdd = document.querySelector('.btn-add');
+const btnEquals = document.querySelector('.btn-equals');
 const btn9 = document.querySelector('.btn-9');
 const btn8 = document.querySelector('.btn-8');
 const btn7 = document.querySelector('.btn-7');
@@ -26,12 +27,88 @@ let firstNum = '';
 let secondNum = '';
 let operator = '';
 
+// `';.;'``';.;'``';.;'``';.;'`` EVENTS '``';.;'``';.;'``';.;'``';.;'` //
+btn9.addEventListener('click', () => {clickButton('9');});
+btn8.addEventListener('click', () => {clickButton('8');});
+btn7.addEventListener('click', () => {clickButton('7');});
+btn6.addEventListener('click', () => {clickButton('6');});
+btn5.addEventListener('click', () => {clickButton('5');});
+btn4.addEventListener('click', () => {clickButton('4');});
+btn3.addEventListener('click', () => {clickButton('3');});
+btn2.addEventListener('click', () => {clickButton('2');});
+btn1.addEventListener('click', () => {clickButton('1');});
+btn0.addEventListener('click', () => {clickButton('0');});
+btnAdd.addEventListener('click', () => {clickButton('+');});
+btnSubtract.addEventListener('click', () => {clickButton('-');});
+btnMultiply.addEventListener('click', () => {clickButton('*');});
+btnDivide.addEventListener('click', () => {clickButton('/');});
+btnDel.addEventListener('click', () => {clickButton('del');});
+btnAc.addEventListener('click', () => {clickButton('AC');});
+btnEquals.addEventListener('click', () => {clickButton('=');});
+
 
 // ≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈ //
 // :.:.:.:.:.:.::.:.:.:.:.:.::.:.:.:.:.:.::.:.:.:.:.:.::.:.:.:.:.:.::. //
 // "`-._,-'"`-._,-'"`-._,-'"`-. FUNCTIONS "`-._,-'"`-._,-'"`-._,-'"`-. //
 // :.:.:.:.:.:.::.:.:.:.:.:.::.:.:.:.:.:.::.:.:.:.:.:.::.:.:.:.:.:.::. //
 // ≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈ ≈ //
+
+
+
+function clickButton (buttonValue) {
+    switch (buttonValue) {
+        case '0':
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+        case '6':
+        case '7':
+        case '8':
+        case '9':
+            if (firstNum === '') {
+                firstNum += buttonValue;
+                topDisplayString += buttonValue;
+                displayTop.textContent = topDisplayString;
+            }
+            else if (operator === '') {
+                firstNum += buttonValue;
+                topDisplayString += buttonValue;
+                displayTop.textContent = topDisplayString;
+            }
+            else if (operator !== '') {
+                secondNum += buttonValue;
+                topDisplayString += buttonValue;
+                displayTop.textContent = topDisplayString;
+            }
+            lastInputType = 'number';
+            break;
+        case '/':
+        case '*':
+        case '+':
+        case '-':
+            if (lastInputType === 'number') {
+                operator = buttonValue;
+                topDisplayString += buttonValue;
+                displayTop.textContent = topDisplayString;
+            }
+            break;
+        case 'del':
+            break;
+        case 'AC':
+            operator = '';
+            lastInputType = '';
+            firstNum = '';
+            secondNum = '';
+            displayTop.textContent = '';
+            displayBottom.textContent = '';
+            topDisplayString = '';
+            bottomDisplayString = '';
+            break;
+        case '=':
+    }
+}
 
 function add (a, b) {
     return Number(a) + Number(b);

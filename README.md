@@ -33,9 +33,9 @@ Problem solving:
     - Adapt to corrupt input (eg: the program should handle two operators in sequence '6 // 2 ='. Either ignore the 2nd operator, or display an error message).
         - Solution: require input AFTER an operator to be a number, or 'backspace', 'clear', etc.
 
-  .--.      .-'.      .--.      .--.      .--.      .--.      .`-.      .--.
+  .--.      .--.      .--.      .--.      .--.      .--.      .--.      .--.
 :::::.\::::::::.\::::::::.\::::::::.\::::::::.\::::::::.\::::::::.\::::::::.\
-'      `--'      `.-'      `--'      `--'      `--'      `-.'      `--'      `
+'      `--'      `--'      `--'      `--'      `--'      `--'      `--'      `
               Challenge: How to handle the flow of the program.
 
 Rough solution:
