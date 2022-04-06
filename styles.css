@@ -41,6 +41,7 @@ body {
     padding: 4px;
     font-family: 'Red Hat Mono', monospace;
     border-radius: 2px;
+    overflow: hidden;
 }
 
 .display-top,
