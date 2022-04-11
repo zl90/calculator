@@ -1,8 +1,5 @@
-# calculator
-My submission for the Calculator assignment on The Odin Project https://www.theodinproject.com/lessons/foundations-calculator
-
-# LCD Calculator
-### LCD Calculator using an SVG Display
+# Calculator
+### A calculator app built with vanilla Javascript
 
 Live Demo: 
 
